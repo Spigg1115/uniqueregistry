@@ -430,14 +430,14 @@ nav.main-nav { display: none; }
         To register this name, launch through a UNIQUE-integrated launchpad.
       </p>
       <a href="https://bscscan.com/address/0x1dDE1B992cdD5a11E77e02Eb6A16a0F64770d9cd#readContract" target="_blank" style="text-decoration: none;">
-        <button class="btn-secondary" style="font-size: 12px;">View registry on BscScan →</button>
+        <button class="btn-secondary" style="font-size: 12px;">View registry on BscScan &rarr;</button>
       </a>
     </div>
   </div>
 
   <div class="stats-row">
     <div class="stat">
-      <div class="stat-value" style="color: var(--green);">Verified ✓</div>
+      <div class="stat-value" style="color: var(--green);">Verified &check;</div>
       <div class="stat-label">CONTRACT</div>
     </div>
     <div class="stat">
@@ -468,17 +468,17 @@ nav.main-nav { display: none; }
   </p>
   <div class="grid-3" style="margin-top: 32px;">
     <div class="card" style="border-top: 2px solid #FF525244; padding: 24px;">
-      <div style="font-size: 24px; margin-bottom: 12px;">⚠️</div>
+      <div style="font-size: 24px; margin-bottom: 12px;">!</div>
       <div style="font-weight: 700; margin-bottom: 8px;">Any name can be cloned</div>
       <div style="color: var(--mid); font-size: 13px; line-height: 1.6;">No technical barrier exists today. $PEPE can be relaunched 1000 times on the same platform.</div>
     </div>
     <div class="card" style="border-top: 2px solid #FF525244; padding: 24px;">
-      <div style="font-size: 24px; margin-bottom: 12px;">👥</div>
+      <div style="font-size: 24px; margin-bottom: 12px;"></div>
       <div style="font-weight: 700; margin-bottom: 8px;">Investors cannot tell the difference</div>
       <div style="color: var(--mid); font-size: 13px; line-height: 1.6;">Clone tokens look identical at launch. Retail loses money, loses trust, and stops coming back.</div>
     </div>
     <div class="card" style="border-top: 2px solid #FF525244; padding: 24px;">
-      <div style="font-size: 24px; margin-bottom: 12px;">🔍</div>
+      <div style="font-size: 24px; margin-bottom: 12px;"></div>
       <div style="font-weight: 700; margin-bottom: 8px;">No on-chain proof exists</div>
       <div style="color: var(--mid); font-size: 13px; line-height: 1.6;">There is no way to verify on-chain which token was first. No timestamp, no standard, no protection.</div>
     </div>
@@ -583,7 +583,7 @@ nav.main-nav { display: none; }
   <div class="mono" style="font-size: 12px; color: var(--mid); word-break: break-all;">0x1dDE1B992cdD5a11E77e02Eb6A16a0F64770d9cd</div>
   <div style="margin-top: 12px;">
     <a href="https://bscscan.com/address/0x1dDE1B992cdD5a11E77e02Eb6A16a0F64770d9cd#readContract" target="_blank" style="text-decoration: none;">
-      <button class="btn-secondary" style="font-size: 11px;">View on BscScan →</button>
+      <button class="btn-secondary" style="font-size: 11px;">View on BscScan &rarr;</button>
     </a>
   </div>
 </div>
@@ -804,7 +804,7 @@ nav.main-nav { display: none; }
     Contact the UNIQUE team. We authorize your launchpad address on the registry. Integration takes less than one day.
   </p>
   <a href="https://bscscan.com/address/0x1dDE1B992cdD5a11E77e02Eb6A16a0F64770d9cd" target="_blank" style="text-decoration: none;">
-    <button class="btn-primary">View contract on BscScan →</button>
+    <button class="btn-primary">View contract on BscScan &rarr;</button>
   </a>
 </div>
 ```
@@ -819,9 +819,9 @@ nav.main-nav { display: none; }
       <div class="mono" style="font-size: 10px; color: var(--dim);">The identity layer for every token on BNBChain.</div>
     </div>
     <div style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap;">
-      <a href="https://bscscan.com/address/0x1dDE1B992cdD5a11E77e02Eb6A16a0F64770d9cd" target="_blank" style="text-decoration: none; color: var(--mid); font-size: 12px; font-family: 'Space Mono', monospace;">BscScan ↗</a>
+      <a href="https://bscscan.com/address/0x1dDE1B992cdD5a11E77e02Eb6A16a0F64770d9cd" target="_blank" style="text-decoration: none; color: var(--mid); font-size: 12px; font-family: 'Space Mono', monospace;">BscScan </a>
       <span class="mono" style="font-size: 9px; color: var(--dim);">0x1dDE1B99...70d9cd</span>
-      <span class="mono" style="font-size: 10px; color: var(--dim);">BNBChain · 2026</span>
+      <span class="mono" style="font-size: 10px; color: var(--dim);">BNBChain &middot; 2026</span>
     </div>
   </div>
 </footer>
@@ -897,14 +897,14 @@ nav.main-nav { display: none; }
         icon.innerHTML = '';
       } else if (taken) {
         input.classList.add('taken');
-        status.textContent = `$${val} is already registered on UNIQUE.`;
+        status.textContent = "$" + val + " is already registered on UNIQUE.";
         status.style.color = "#FF5252";
-        icon.innerHTML = '<span style="color: #FF5252; font-size: 18px;">✗</span>';
+        icon.innerHTML = '<span style="color: #FF5252; font-size: 18px;">X</span>';
       } else {
         input.classList.add('available');
-        status.textContent = `$${val} is available - register now.`;
+        status.textContent = "$" + val + " is available - register now.";
         status.style.color = "var(--green)";
-        icon.innerHTML = '<span style="color: var(--green); font-size: 18px;">✓</span>';
+        icon.innerHTML = '<span style="color: var(--green); font-size: 18px;">&check;</span>';
       }
     }, 600);
   }
@@ -925,30 +925,9 @@ nav.main-nav { display: none; }
     }
 
     if (taken) {
-      result.innerHTML = `
-        <div class="card fade-up" style="border-color: #F0B90B44;">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
-            <div class="mono" style="font-size: 28px; font-weight: 700; color: var(--white);">$${val}</div>
-            <span class="stamp-badge">Registered</span>
-          </div>
-          <p style="color: var(--mid); font-size: 13px; margin-bottom: 20px; line-height: 1.6;">
-            <strong style="color: var(--white);">$${val}</strong> is registered on UNIQUE Protocol. This name is permanently protected on BNBChain. No other project can register this ticker.
-          </p>
-          <a href="https://bscscan.com/address/${CONTRACT}#readContract" target="_blank" style="text-decoration: none;">
-            <button class="btn-secondary" style="font-size: 12px;">View full record on BscScan →</button>
-          </a>
-        </div>`;
+      result.innerHTML = '<div class="card fade-up" style="border-color: #F0B90B44;"><div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;"><div class="mono" style="font-size: 28px; font-weight: 700; color: var(--white);">$' + val + '</div><span class="stamp-badge">Registered</span></div><p style="color: var(--mid); font-size: 13px; margin-bottom: 20px; line-height: 1.6;"><strong style="color: var(--white);">$' + val + '</strong> is registered on UNIQUE Protocol. This name is permanently protected on BNBChain.</p><a href="https://bscscan.com/address/' + CONTRACT + '#readContract" target="_blank" style="text-decoration: none;"><button class="btn-secondary" style="font-size: 12px;">View on BscScan</button></a></div>';
     } else {
-      result.innerHTML = `
-        <div class="card fade-up">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
-            <div class="mono" style="font-size: 28px; font-weight: 700; color: var(--white);">$${val}</div>
-            <span style="background: #00D4A018; border: 1px solid #00D4A044; border-radius: 6px; color: var(--green); font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; padding: 4px 10px;">Available</span>
-          </div>
-          <p style="color: var(--mid); font-size: 13px; line-height: 1.6;">
-            <strong style="color: var(--white);">$${val}</strong> is not yet registered. First to register owns it forever. Launch through a UNIQUE-integrated launchpad to claim this name.
-          </p>
-        </div>`;
+      result.innerHTML = '<div class="card fade-up"><div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;"><div class="mono" style="font-size: 28px; font-weight: 700; color: var(--white);">$' + val + '</div><span style="background: #00D4A018; border: 1px solid #00D4A044; border-radius: 6px; color: var(--green); font-family: Space Mono, monospace; font-size: 10px; font-weight: 700; padding: 4px 10px;">Available</span></div><p style="color: var(--mid); font-size: 13px; line-height: 1.6;"><strong style="color: var(--white);">$' + val + '</strong> is not yet registered. First to register owns it forever.</p></div>';
     }
   }
 
