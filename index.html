@@ -1204,21 +1204,11 @@ footer {
 </div>
 </div>
 </footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
 <script>
 const CONTRACT = "0x1dDE1B992cdD5a11E77e02Eb6A16a0F64770d9cd";
 const RPC = "https://bsc-dataseed.binance.org/";
-
-// isTaken(string) selector
-function encodeIsTaken(ticker) {
-  const sig = "0x" + "e46f9418"; // keccak256("isTaken(string)") first 4 bytes
-  const normalized = ticker.toUpperCase();
-  const hex = Array.from(new TextEncoder().encode(normalized))
-    .map(b => b.toString(16).padStart(2, "0")).join("");
-  const offset = "0000000000000000000000000000000000000000000000000000000000000020";
-  const len = normalized.length.toString(16).padStart(64, "0");
-  const data = hex.padEnd(Math.ceil(hex.length / 64) * 64, "0");
-  return sig + offset + len + data;
-}
+const IFACE = new ethers.Interface(["function isTaken(string) view returns (bool)"]);
 
 let debounceTimer;
 const input = document.getElementById("tickerInput");
@@ -1242,7 +1232,7 @@ if (input) {
 
     debounceTimer = setTimeout(async () => {
       try {
-        const data = encodeIsTaken(val);
+        const data = IFACE.encodeFunctionData("isTaken", [val.toUpperCase()]);
         const res = await fetch(RPC, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -1253,9 +1243,10 @@ if (input) {
           })
         });
         const json = await res.json();
-        const taken = json.result && json.result !== "0x" &&
-          json.result !== "0x" + "0".repeat(64) &&
-          json.result.slice(-1) === "1";
+
+        if (!json.result || json.result === "0x") throw new Error("No result");
+
+        const taken = IFACE.decodeFunctionResult("isTaken", json.result)[0];
 
         if (taken) {
           input.style.borderColor = "#FF5252";
