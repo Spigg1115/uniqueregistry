@@ -1055,7 +1055,7 @@ footer {
 <h2 style="font-size: clamp(26px, 4vw, 38px); line-height: 1.25; margin-bottom: 32px;">UNIQUE is here to bring a new era<br/>of trust on BNBChain.</h2>
 <div style="background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--gold); border-radius: 12px; padding: 36px 40px; text-align: left;">
 <p style="font-size: 16px; line-height: 1.85; color: var(--light); margin: 0;">
-        The meme space has evolved fast. With that growth came a natural side effect: confusion around token names made it harder for users to identify original projects, and harder for creators to build lasting communities around their work. UNIQUE addresses this at the root. When a name is registered and protected permanently, clarity follows. Creators build knowing their identity is theirs. Users engage knowing what they are buying. Communities form around projects with purpose, not around short lived hype cycles. This is not just a technical feature. It is a new standard for how tokens launch on BNBChain. One that rewards creativity, encourages long term thinking, and gives builders the foundation they need to grow something real. The next wave of meme culture on BNBChain starts with trust. And in a space where everything looks the same, there has never been a better time to stand out. To be UNIQUE.
+        The BNBChain ecosystem has grown fast. With that growth came a natural side effect: confusion around token names made it harder for users to identify original projects, and harder for creators to build lasting communities around their work. UNIQUE addresses this at the root. When a name is registered and protected permanently, clarity follows. Creators build knowing their identity is theirs. Users engage knowing what they are buying. Communities form around projects with purpose, not around short lived hype cycles. This is not just a technical feature. It is a new standard for how tokens launch on BNBChain. One that rewards creativity, encourages long term thinking, and gives builders the foundation they need to grow something real. The next wave of token culture on BNBChain starts with trust. And in a space where everything looks the same, there has never been a better time to stand out. To be UNIQUE.
       </p>
 </div>
 </div>
@@ -1204,11 +1204,21 @@ footer {
 </div>
 </div>
 </footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
 <script>
 const CONTRACT = "0x1dDE1B992cdD5a11E77e02Eb6A16a0F64770d9cd";
 const RPC = "https://bsc-dataseed.binance.org/";
-const IFACE = new ethers.Interface(["function isTaken(string) view returns (bool)"]);
+
+// isTaken(string) selector
+function encodeIsTaken(ticker) {
+  const sig = "0x" + "e46f9418"; // keccak256("isTaken(string)") first 4 bytes
+  const normalized = ticker.toUpperCase();
+  const hex = Array.from(new TextEncoder().encode(normalized))
+    .map(b => b.toString(16).padStart(2, "0")).join("");
+  const offset = "0000000000000000000000000000000000000000000000000000000000000020";
+  const len = normalized.length.toString(16).padStart(64, "0");
+  const data = hex.padEnd(Math.ceil(hex.length / 64) * 64, "0");
+  return sig + offset + len + data;
+}
 
 let debounceTimer;
 const input = document.getElementById("tickerInput");
@@ -1232,7 +1242,7 @@ if (input) {
 
     debounceTimer = setTimeout(async () => {
       try {
-        const data = IFACE.encodeFunctionData("isTaken", [val.toUpperCase()]);
+        const data = encodeIsTaken(val);
         const res = await fetch(RPC, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -1243,10 +1253,9 @@ if (input) {
           })
         });
         const json = await res.json();
-
-        if (!json.result || json.result === "0x") throw new Error("No result");
-
-        const taken = IFACE.decodeFunctionResult("isTaken", json.result)[0];
+        const taken = json.result && json.result !== "0x" &&
+          json.result !== "0x" + "0".repeat(64) &&
+          json.result.slice(-1) === "1";
 
         if (taken) {
           input.style.borderColor = "#FF5252";
