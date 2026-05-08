@@ -1204,74 +1204,53 @@ footer {
 </div>
 </div>
 </footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
 <script>
-const CONTRACT = "0x1dDE1B992cdD5a11E77e02Eb6A16a0F64770d9cd";
-const RPC = "https://bsc-dataseed.binance.org/";
+const CONTRACT  = "0x1dDE1B992cdD5a11E77e02Eb6A16a0F64770d9cd";
+const RPC       = "https://bsc-dataseed.binance.org/";
+const ABI       = ["function isTaken(string ticker) view returns (bool)"];
 
-// isTaken(string) selector
-function encodeIsTaken(ticker) {
-  const sig = "0x" + "e46f9418"; // keccak256("isTaken(string)") first 4 bytes
-  const normalized = ticker.toUpperCase();
-  const hex = Array.from(new TextEncoder().encode(normalized))
-    .map(b => b.toString(16).padStart(2, "0")).join("");
-  const offset = "0000000000000000000000000000000000000000000000000000000000000020";
-  const len = normalized.length.toString(16).padStart(64, "0");
-  const data = hex.padEnd(Math.ceil(hex.length / 64) * 64, "0");
-  return sig + offset + len + data;
-}
+const provider  = new ethers.JsonRpcProvider(RPC);
+const registry  = new ethers.Contract(CONTRACT, ABI, provider);
 
 let debounceTimer;
-const input = document.getElementById("tickerInput");
-const icon  = document.getElementById("tickerIcon");
+const input  = document.getElementById("tickerInput");
+const icon   = document.getElementById("tickerIcon");
 const status = document.getElementById("tickerStatus");
 
 if (input) {
-  input.addEventListener("input", function() {
+  input.addEventListener("input", function () {
     const val = this.value.trim();
     this.style.textTransform = "uppercase";
     clearTimeout(debounceTimer);
-    icon.textContent = "";
+    icon.textContent  = "";
     status.textContent = "";
     this.style.borderColor = "var(--border2)";
 
     if (val.length < 2) return;
 
     icon.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border:2px solid #F0B90B33;border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;"></span>';
-    status.style.color = "var(--dim)";
-    status.textContent = "Checking...";
+    status.style.color  = "var(--dim)";
+    status.textContent  = "Checking...";
 
     debounceTimer = setTimeout(async () => {
       try {
-        const data = encodeIsTaken(val);
-        const res = await fetch(RPC, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            jsonrpc: "2.0", method: "eth_call",
-            params: [{ to: CONTRACT, data }, "latest"],
-            id: 1
-          })
-        });
-        const json = await res.json();
-        const taken = json.result && json.result !== "0x" &&
-          json.result !== "0x" + "0".repeat(64) &&
-          json.result.slice(-1) === "1";
-
+        const taken = await registry.isTaken(val.toUpperCase());
         if (taken) {
           input.style.borderColor = "#FF5252";
-          icon.textContent = "✗";
-          icon.style.color = "#FF5252";
-          status.style.color = "#FF5252";
-          status.textContent = "$" + val.toUpperCase() + " is already registered.";
+          icon.textContent        = "✗";
+          icon.style.color        = "#FF5252";
+          status.style.color      = "#FF5252";
+          status.textContent      = "$" + val.toUpperCase() + " is already registered.";
         } else {
           input.style.borderColor = "var(--green)";
-          icon.textContent = "✓";
-          icon.style.color = "var(--green)";
-          status.style.color = "var(--green)";
-          status.textContent = "$" + val.toUpperCase() + " is available.";
+          icon.textContent        = "✓";
+          icon.style.color        = "var(--green)";
+          status.style.color      = "var(--green)";
+          status.textContent      = "$" + val.toUpperCase() + " is available.";
         }
-      } catch(e) {
-        icon.textContent = "";
+      } catch (e) {
+        icon.textContent   = "";
         status.style.color = "var(--dim)";
         status.textContent = "Unable to check, try again.";
       }
