@@ -855,8 +855,8 @@ footer {
 <div class="stat-label">On-chain standard</div>
 </div>
 <div class="stat">
-<div class="stat-value">∞</div>
-<div class="stat-label">Protection</div>
+<div class="stat-value" id="totalRegistered" style="color:var(--gold);">—</div>
+<div class="stat-label">Tickers Registered</div>
 </div>
 </div>
 </div>
@@ -1241,10 +1241,26 @@ footer {
 <script>
 const CONTRACT  = "0x12F5D57243b8F8b7897ABDC8530950dd1071E74e";
 const RPC       = "https://bsc-dataseed.binance.org/";
-const ABI       = ["function isTaken(string ticker) view returns (bool)"];
+const ABI       = [
+  "function isTaken(string ticker) view returns (bool)",
+  "function totalRegistered() view returns (uint256)"
+];
 
 const provider  = new ethers.JsonRpcProvider(RPC);
 const registry  = new ethers.Contract(CONTRACT, ABI, provider);
+
+// Live counter
+async function loadCounter() {
+  try {
+    const total = await registry.totalRegistered();
+    const el = document.getElementById("totalRegistered");
+    if (el) el.textContent = total.toString();
+  } catch (e) {
+    const el = document.getElementById("totalRegistered");
+    if (el) el.textContent = "—";
+  }
+}
+loadCounter();
 
 let debounceTimer;
 const input  = document.getElementById("tickerInput");
